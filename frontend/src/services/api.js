@@ -1,9 +1,13 @@
 // API Service Layer for Veritas AI Fake News Detection Platform
 
-const DEFAULT_API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const DEFAULT_API_URL = import.meta.env.VITE_API_BASE_URL || 'https://fakenewsdectector.onrender.com';
 
 export const getApiBaseUrl = () => {
-  return localStorage.getItem('veritas_api_base_url') || DEFAULT_API_URL;
+  const saved = localStorage.getItem('veritas_api_base_url');
+  if (saved && typeof window !== 'undefined' && !window.location.hostname.includes('localhost') && saved.includes('localhost')) {
+    return DEFAULT_API_URL;
+  }
+  return saved || DEFAULT_API_URL;
 };
 
 export const setApiBaseUrl = (url) => {
